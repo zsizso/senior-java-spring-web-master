@@ -1,7 +1,7 @@
 package hu.ponte.hr.controller;
 
 
-import hu.ponte.hr.services.ImageStore;
+import hu.ponte.hr.services.IimageStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,15 +17,25 @@ import java.util.List;
 public class ImagesController {
 
     @Autowired
-    private ImageStore imageStore;
+    private IimageStore imageStore;
 
     @GetMapping("meta")
     public List<ImageMeta> listImages() {
-		return Collections.emptyList();
+        try {
+            return imageStore.listImages();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
     @GetMapping("preview/{id}")
     public void getImage(@PathVariable("id") String id, HttpServletResponse response) {
-	}
+        try {
+            imageStore.getImage(id,response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
